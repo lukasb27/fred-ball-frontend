@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fred Ball</title>
+<style>
+  body { font-family: sans-serif; padding: 20px; background: #fafafa; }
+  #items { max-width: 700px; margin: auto; }
+  .item { background: #fff; margin: 10px 0; padding: 15px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+  #loading { text-align: center; padding: 15px; font-style: italic; color: #555; }
+</style>
+</head>
+<body>
+<hr>
+<div style="text-align: center;">
+    <h1>Fred Ball</h1>
+    <img src="https://fred-ball-website.s3.eu-west-2.amazonaws.com/images/image1.jpg"></img><br>
+    8th May 1923 - 20th February 2003 <br>
+
+    <b>30 years in the Royal Navy</b><br>
+
+    This is diary of my late fathers life in the Royal Navy. <br>
+    He never spoke in detail to me about his career, it was only after death that I felt this web site <br>
+    should be produced as a record based on the many photos he had kept and the diary he produced in 1988. <br>
+</div>
+<hr>
+<div id="items"></div>
+<div id="loading">Loading...</div>
+
+<script>
+const itemsContainer = document.getElementById("items");
+const loadingEl = document.getElementById("loading");
+
+let years = [];
+let currentYearIndex = 0;
+let currentYearData = [];
+let dataIndex = 0;
+let fetching = false;
+const batchSize = 3;
+
+// Render items
+function renderItems(items) {
+  items.forEach(item => {
+      const div = document.createElement("div");
+      div.className = "item";
+      div.innerHTML = `<strong>${item.date}</strong><br>${item.text}`;
+      if (item.image_url) {
+        div.innerHTML += `<br><img src="${item.image_url}" alt="Image" style="max-width:100%; margin-top:10px; display: block; margin-left: auto; margin-right: auto;">`;
+      }
+      itemsContainer.appendChild(div);
+  });
+}
+
+
+// Fetch data for a specific year
+async function fetchYearData(year) {
+  try {
+    const res = await fetch(`https://api.fredball.co.uk/year/${year}`);
+    if (!res.ok) throw new Error(`Failed to fetch data for year ${year}`);
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}
+
+// Load next batch of items
+async function fetchBatch() {
+  if (currentYearIndex >= years.length && dataIndex >= currentYearData.length) {
+    loadingEl.textContent = "All items loaded";
+    return;
+  }
+
+  if (fetching) return;
+  fetching = true;
+  loadingEl.textContent = "Loading...";
+
+  // Load next year's data if needed
+  if (dataIndex >= currentYearData.length && currentYearIndex < years.length) {
+    const year = years[currentYearIndex++];
+    currentYearData = await fetchYearData(year);
+    dataIndex = 0;
+  }
+
+  // Grab batch from current year's data
+  const batch = currentYearData.slice(dataIndex, dataIndex + batchSize);
+  dataIndex += batch.length;
+
+  renderItems(batch);
+  fetching = false;
+  loadingEl.textContent = "";
+
+  // Preload next batch if content shorter than viewport
+  if (document.body.offsetHeight < window.innerHeight) {
+    fetchBatch();
+  }
+}
+
+// Infinite scroll listener
+window.addEventListener("scroll", () => {
+  if (!fetching && window.innerHeight + window.scrollY >= document.body.offsetHeight - 20) {
+    fetchBatch();
+  }
+});
+
+// Initial load: fetch years first
+async function init() {
+  try {
+    const res = await fetch("https://api.fredball.co.uk/years/");
+    if (!res.ok) throw new Error("Failed to fetch years");
+    years = await res.json();
+    if (years.length === 0) {
+      loadingEl.textContent = "No years available";
+      return;
+    }
+    fetchBatch();
+  } catch (err) {
+    console.error(err);
+    loadingEl.textContent = "Failed to load data";
+  }
+}
+
+init();
+</script>
+</body>
+</html>
