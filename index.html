@@ -1,98 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fred Ball </title>
-  <style>
-    body {
-      font-family: Georgia, 'Times New Roman', serif;
-      background: #f7f5f2;
-      color: #1f2a33;
-      margin: 0;
-      padding: 0;
-    }
-
-    header {
-      background: #1f2a33;
-      color: #f7f5f2;
-      padding: 3rem 1rem;
-      text-align: center;
-    }
-
-    header h1 {
-      font-size: 2.2rem;
-      margin-bottom: 0.5rem;
-    }
-
-    header p {
-      max-width: 700px;
-      margin: 0 auto;
-      font-size: 1.1rem;
-      line-height: 1.6;
-    }
-
-    .container {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 3rem 1rem;
-    }
-
-    .year-section {
-      margin-bottom: 4rem;
-    }
-
-    .year-header {
-      border-top: 2px solid #c2b59b;
-      padding-top: 1.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .year-header h2 {
-      font-size: 1.8rem;
-      margin: 0;
-    }
-
-    .year-summary {
-      font-style: italic;
-      color: #4a5a66;
-      margin: 0.5rem 0 1.5rem 0;
-    }
-
-    .entry {
-      line-height: 1.75;
-      font-size: 1.05rem;
-    }
-
-    .loader {
-      text-align: center;
-      color: #7a8691;
-      font-style: italic;
-      margin: 3rem 0;
-    }
-
-    footer {
-      border-top: 1px solid #ddd;
-      padding: 2rem 1rem;
-      text-align: center;
-      font-size: 0.9rem;
-      color: #555;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fred Ball</title>
+<style>
+  body { font-family: sans-serif; padding: 20px; background: #fafafa; }
+  #items { max-width: 700px; margin: auto; }
+  .item { background: #fff; margin: 10px 0; padding: 15px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+  #loading { text-align: center; padding: 15px; font-style: italic; color: #555; }
+</style>
 </head>
 <body>
+<hr>
+<div style="text-align: center;">
+    <h1>Fred Ball</h1>
+    <img src="https://fred-ball-website.s3.eu-west-2.amazonaws.com/images/image1.jpg"></img><br>
+    8th May 1923 - 20th February 2003 <br>
 
-<header>
-  <h1>Fred Charles Arthur Ball B.E.M. </h1>
-  <h2>8th May 1923 - 20th February 2003.</h2>
-  <h2>30 years in the Royal Navy.</h2>
-  <p>
-    This is diary of my late fathers life in the Royal Navy.
-    He never spoke in detail to me about his career, it was only after death that I felt this web site
-    should be produced as a record based on the many photos he had kept and the diary he produced in 1988.
-  </p>
-</header>
+    <b>30 years in the Royal Navy</b><br>
 
+    This is diary of my late fathers life in the Royal Navy. <br>
+    He never spoke in detail to me about his career, it was only after death that I felt this web site <br>
+    should be produced as a record based on the many photos he had kept and the diary he produced in 1988. <br>
+</div>
+<hr>
 <div id="items"></div>
 <div id="loading">Loading...</div>
 
@@ -192,9 +124,5 @@ async function init() {
 
 init();
 </script>
-<footer>
-  © Fred Ball Archive - for contact chrisball@email.com
-</footer>
-
 </body>
 </html>
